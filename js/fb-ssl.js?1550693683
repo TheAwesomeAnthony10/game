@@ -1,0 +1,79 @@
+ window.fbAsyncInit = function() {
+				    FB.init({
+				      appId      : '1570491203218043',
+				      xfbml      : true,
+				      version    : 'v2.8'
+				    });
+				    FB.AppEvents.logPageView();
+		};
+			
+		window.facebook = {
+		 
+		  init : function(appId) {
+		  			  	
+
+		  },
+		 
+		 	
+		 	getCookie : function(cname) {
+			  var name = cname + "=";
+			  var decodedCookie = decodeURIComponent(document.cookie);
+			  var ca = decodedCookie.split(';');
+			  for(var i = 0; i <ca.length; i++) {
+			    var c = ca[i];
+			    while (c.charAt(0) == ' ') {
+			      c = c.substring(1);
+			    }
+			    if (c.indexOf(name) == 0) {
+			      return c.substring(name.length, c.length);
+			    }
+			  }
+			  return "";
+			},
+			
+			initLogin : function(data, callback)  {
+				
+				     var domain = location.href+'';
+				     domain = domain.split('://')[1].split('/')[0].replace('play.','');
+				     
+				     window.facebook.callback = callback;
+				     var popup = window.open("https://"+domain+"/facebook-web.php?p="+data.permissions, "", "width=700,height=500,scrollbar,resizable");
+				     var timer = setInterval(function() {
+				     	 
+				     	 if (popup.closed)
+				     	 {
+				     	 	 
+				     	 	 clearInterval(timer);
+				     	 	  
+				     	 	 if (window.facebook.getCookie('fbtoken') == 'error')
+				     	 	  callback(null);
+				     	 	 else
+				     	 	 	callback({ token : window.facebook.getCookie('fbtoken')});
+				     	 	 
+				     	  	
+				     	 }
+				     	
+				     }, 500);
+				/*
+					    FB.login(function(response) { 
+					    	
+					    	
+					    	if (response.authResponse)
+					    		callback({ token : response.authResponse.accessToken});
+					    	 else
+					    	 	 callback(null);
+					    	
+					  }, { scope : data.permissions });*/
+			}
+			
+			
+		};
+		
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
