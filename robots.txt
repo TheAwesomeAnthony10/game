@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>Play Mitos.is: The Game</title>
+	
+	<meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	
+	
+	<link rel="icon" type="image/png" href="/favicon0.png" /> 
+	 
+	<script type="text/javascript" src="//play.mitos.is/js/audio.min.js"></script>
+	<script type="text/javascript" src="//play.mitos.is/lib/pako.min.js"></script>
+	<script type="text/javascript" src="//play.mitos.is/js/engine.js?v=1555755545"></script>
+	<script type="text/javascript" src="//play.mitos.is/js/fb-ssl.js?1550693683"></script>
+	
+	<script>
+		
+		__fileReaderCallback = null;
+		
+		window.addEventListener ("touchmove", function (event) { event.preventDefault (); }, false);
+		if (typeof window.devicePixelRatio != 'undefined' && window.devicePixelRatio > 2) {
+			var meta = document.getElementById ("viewport");
+			meta.setAttribute ('content', 'width=device-width, initial-scale=' + (2 / window.devicePixelRatio) + ', user-scalable=no');
+		}
+function performClick(elemId) {
+   var elem = document.getElementById(elemId);
+   if(elem && document.createEvent) {
+      var evt = document.createEvent("MouseEvents");
+      evt.initEvent("click", true, false);
+      elem.dispatchEvent(evt);
+   }
+}
+		
+		function choosenFile(evt)
+		{
+			 evt = evt || window.event;
+			 evt.stopPropagation();
+       evt.preventDefault();
+       
+       var files = evt.target.files; 
+       if (files.length > 0)
+       {
+         
+         var reader = new FileReader();
+
+			   reader.onload = (function(f) {
+			        return function(ev) {
+			        
+			         
+			         __fileReaderCallback(ev.target.result);
+			        
+			        
+			        };
+			      })(files[0]);         
+         	
+         	reader.readAsArrayBuffer(files[0]);
+       }
+		}
+		
+		function browseFile(callback) {
+			
+			
+			__fileReaderCallback = callback;
+			performClick('browse');
+			
+			
+			
+		}
+		
+	</script>
+	
+	<style>
+		html,body { background: #0D2829; margin: 0; padding: 0; height: 100%; overflow: hidden; }
+		#canvas { width: 100%; height: 100%; }
+		#browse {position:absolute;left:-1000px; right:-1000px; }
+	</style>
+	
+</head>
+<body>
+	
+	<noscript>This webpage makes extensive use of JavaScript. Please enable JavaScript in your web browser to view this page.</noscript>
+	
+	<input type="file" id="browse" name="browse" onchange="return choosenFile(event);" accept="image/*" />
+	<div id="canvas"></div>
+	
+	<script type="text/javascript">
+		function webgl_support() { 
+   try{
+    var canvas = document.createElement( 'canvas' ); 
+    return !! window.WebGLRenderingContext && ( 
+         canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' ) );
+   }catch( e ) { return false; } 
+ };
+ 
+   if (!webgl_support())
+   {
+     location.href='//get.mitos.is/?download=true';	
+   } else {
+ 
+		var token = null;
+		
+		
+		if(location.hash && location.hash.substr(0,2)=='#u')
+		{
+			token = location.hash.substr(2);
+			location.hash = 'play';
+		}
+		
+		window.APP_ID=0;
+		window.WEB_TOKEN = token;
+		
+		lime.embed ("canvas", 0, 0, "0D2829");
+	}
+	</script>
+	
+</body>
+</html>
